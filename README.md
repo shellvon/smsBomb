@@ -62,7 +62,7 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 + [聚合数据:juhe](https://www.juhe.cn/)
 + [阿里大鱼:aliyun](https://dayu.aliyun.com/)
 
-当然还有一些小众的可以直接使用通用类 `noramlSms`
+当然还有一些小众的可以直接使用通用类进行发送 即指定 `-p normal`
 
 
 # 发散思维
@@ -82,3 +82,6 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 可以尝试使用 [truffleHog](https://github.com/dxa4481/truffleHog) 等工具
 
 比如结合PyGithub调用Github的搜索接口,将搜索到的重要的一些repo再利用truffleHog尝试深挖。
+
+# 本项目进攻学习研究,请勿用于非法用途
+

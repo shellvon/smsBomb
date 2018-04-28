@@ -21,7 +21,8 @@
       "token": "102ad7bc0b93cc89963ad5ff0c87077a"
     },
     "payloads": {
-      "templateid": "310246"
+      "templateid": "310246",
+      "params": "123456"
     }
   },
   {
@@ -50,7 +51,8 @@
       "token": "eb78c6b89891c71f8769ce7909c39a25"
     },
     "payloads": {
-      "templateid": "277877"
+      "templateid": "277877",
+      "params": "123456"
     }
   },
   {
@@ -63,7 +65,8 @@
       "token": "66edd50a46c882a7f4231186c44416d8"
     },
     "payloads": {
-      "templateid": "178978"
+      "templateid": "178978",
+      "params": "123456"
     }
   },
   {
