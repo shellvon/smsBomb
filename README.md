@@ -83,5 +83,5 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 比如结合PyGithub调用Github的搜索接口,将搜索到的重要的一些repo再利用truffleHog尝试深挖。
 
-# 本项目进攻学习研究,请勿用于非法用途
+# 本项目仅供学习研究,请勿用于非法用途
 
