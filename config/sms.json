@@ -110,7 +110,7 @@
       "username": "ukengame",
       "password": "youtui2017"
     },
-    "cusmtom": true
+    "enable_custom_msg": true
   },
   {
     "product": "yunpian",
@@ -198,7 +198,8 @@
     "auth": {
       "account": "N3300103",
       "password": "JWi7jpcZ3"
-    }
+    },
+    "enable_custom_msg": true
   },
   {
     "product": "cl253",

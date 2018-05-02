@@ -65,6 +65,26 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 当然还有一些小众的可以直接使用通用类进行发送 即指定 `-p normal`
 
+# 配置说明
+
+默认配置: `config/sms.json`
+
+配置内容是一个数组,其中每一个元素代码一个可用于攻击对产品配置, 其中字段说明参见下表:
+
+#### 字段说明
+
+| 字段    | 类型  | 含义  | 是否必须  | 其他说明  |
+|-------  |----|---|---|---|
+| product | string | 产品名,自己取  | 是   |   |
+| desc    | string | 产品描述,用于人看  | 否  |   |
+| source  | string | 表示配置来源  | 否  |   |
+| auth    | object | 授权信息,k-v形式,具体对key依赖于产品  | 否  |   |
+| payloads| object | 需要提交的请求参数 | 否 | 此配置依赖于产品 |
+| api     | string | 请求地址     | 否 | 如果写了此API地址则请求发起至此API，否则发起之对应产品的默认配置API, 参见API_URLS|
+| method  | string | 请求方式     | 否 | 默认为GET请求,此配置依赖于各产品如何实现`send`方法的 |
+| enable_custom_msg| bool | 是否支持自定义消息体| 否| 默认是不支持,如果设置true,参数-m中的消息将作为短信内容进行发送|
+
+
 
 # 发散思维
 
