@@ -9,8 +9,8 @@ from smsBomb import SmsPlugin
 class MiaodiPlugin(SmsPlugin):
     """秒滴云
 
-        文档: http://www.miaodiyun.com/doc/https_sms.html
-        """
+    文档: http://www.miaodiyun.com/doc/https_sms.html
+    """
 
     API_URLS = {
         'send': 'https://api.miaodiyun.com/20150822/industrySMS/sendSMS'
@@ -33,5 +33,5 @@ class MiaodiPlugin(SmsPlugin):
             'sig': self.checksum(ts)
         })
         resp = requests.post(self.api, data=kwargs).json()
-        print(self, resp)
+        self.logger.info(resp)
         return resp['respCode'] == '00000'

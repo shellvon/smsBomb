@@ -49,7 +49,17 @@ class AliyunPlugin(SmsPlugin):
         digest = hmac.new(key, plain_text, 'sha1').digest()
         return quote(base64.b64encode(digest))
 
-    def _create_params(self, mobile, sign_name, template_code, template_params):
+    def _create_params(self, mobile,
+                       sign_name,
+                       template_code,
+                       template_params):
+        """
+        :param mobile: 手机号
+        :param sign_name: 签名
+        :param template_code: 模版编号
+        :param template_params: 模版参数
+        :return:
+        """
         return {
             'AccessKeyId': self.auth['app_key'],
             'Action': 'SendSms',
@@ -68,13 +78,17 @@ class AliyunPlugin(SmsPlugin):
 
     def send(self, mobile, **kwargs):
         params = self._create_params(
-            mobile, kwargs['sign_name'], kwargs['template_code'], kwargs.get('template_params'))
+            mobile,
+            kwargs['sign_name'],
+            kwargs['template_code'],
+            kwargs.get('template_params'))
         plain_text = 'POST&%2F&' + canonicalize(**params)
         sign = self.checksum(plain_text)
         body = 'Signature={}&{}'.format(sign, stringify(**params))
+        self.logger.debug('拼接完成请求体: %s', body)
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         resp = requests.post(self.api, headers=headers,
                              data=body.encode('utf-8')).json()
-        print(self, resp)
+        self.logger.info(resp)
 
         return resp['Code'] == 'OK'

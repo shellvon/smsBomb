@@ -8,8 +8,8 @@ from smsBomb import SmsPlugin
 class SmsbaoPlugin(SmsPlugin):
     """短信宝
 
-        文档: http://api.smsbao.com/
-        """
+    文档: http://api.smsbao.com/
+    """
 
     API_URLS = {
         'send': 'http://api.smsbao.com/sms',
@@ -32,9 +32,9 @@ class SmsbaoPlugin(SmsPlugin):
         payload = {
             'u': self.auth['username'],
             'p': p,
-            'c': kwargs.get('msg', '您的验证码为:233333'),
+            'c': self.get_msg_content(kwargs, 'msg'),
             'm': mobile
         }
         code = int(requests.get(self.api, params=payload).content)
-        print(self, self.ERROR_CODES.get(code, '未知错误代码:%d' % code))
+        self.logger.info(self.ERROR_CODES.get(code, '未知错误代码:%d' % code))
         return code == 0

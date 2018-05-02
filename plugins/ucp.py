@@ -7,9 +7,9 @@ from smsBomb import SmsPlugin
 class UcpPlugin(SmsPlugin):
     """云之讯通讯
 
-        官网: http://www.ucpaas.com/
-        文档地址: http://docs.ucpaas.com/doku.php?id=%E7%9F%AD%E4%BF%A1:about_sms
-        """
+    官网: http://www.ucpaas.com/
+    文档地址: http://docs.ucpaas.com/doku.php?id=%E7%9F%AD%E4%BF%A1:about_sms
+    """
 
     API_URLS = {
         'send': 'https://open.ucpaas.com/ol/sms/sendsms',
@@ -31,5 +31,5 @@ class UcpPlugin(SmsPlugin):
             'mobile': str(mobile)
         })
         resp = requests.post(self.api, json=kwargs).json()
-        print(self, resp)
+        self.logger.info(resp)
         return resp['code'] == '000000'

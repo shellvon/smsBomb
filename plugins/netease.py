@@ -6,11 +6,10 @@ from smsBomb import SmsPlugin
 
 
 class NeteasePlugin(SmsPlugin):
-    """
-       网易云短信
+    """网易云短信
 
-       文档: http://dev.netease.im/docs/product/短信/短信接口指南
-       """
+    文档: http://dev.netease.im/docs/product/短信/短信接口指南
+    """
     API_URLS = {
         'send': 'https://api.netease.im/sms/sendcode.action',
         'verify': 'https://api.netease.im/sms/verifycode.action',
@@ -37,7 +36,9 @@ class NeteasePlugin(SmsPlugin):
 
     def send(self, mobile, **kwargs):
         kwargs.update({'mobile': mobile})
+        headers = self.headers
+        self.logger.debug('请求头: %s', headers)
         resp = requests.post(
-            self.api, headers=self.headers, data=kwargs).json()
-        print(self, resp)
+            self.api, headers=headers, data=kwargs).json()
+        self.logger.info(resp)
         return resp['code'] == 200

@@ -20,12 +20,12 @@ class NormalPlugin(SmsPlugin):
             v = v.replace('{{mobile}}', str(target))
             payloads[k] = v
             v = v.replace('{{content}}', '{0}{1}'.format(
-                kwargs.get('sign_name', ''), kwargs.get('msg', '')))
+                kwargs.get('sign_name', ''),
+                self.get_msg_content(kwargs, 'msg')))
             payloads[k] = v
 
-        import urllib.parse
-        print(self.api, urllib.parse.urlencode(payloads))
+        self.logger.debug('普通消息,进行参数替换:%s', payloads)
         resp = requests.request(self.method, self.api,
                                 headers=self.headers, params=payloads)
-        print(self, resp.content)
+        self.logger.info(resp.content)
         return resp.status_code == 200

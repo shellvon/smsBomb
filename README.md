@@ -3,8 +3,8 @@
 
 ```
 usage: smsBomb.py [-h] -t TARGET [-n TIMES]
-                  [-p {luosimao,submail,netease,cl253,ucp,smsbao,yunpian,normal,tencent,miaodi,juhe,aliyun}]
-                  [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE]
+                  [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}]
+                  [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE] [-v]
 
 短信轰炸机
 
@@ -14,7 +14,7 @@ optional arguments:
                         指定攻击目标手机号
   -n TIMES, --times TIMES
                         指定攻击次数,默认10
-  -p {luosimao,submail,netease,cl253,ucp,smsbao,yunpian,normal,tencent,miaodi,juhe,aliyun}, --product {luosimao,submail,netease,cl253,ucp,smsbao,yunpian,normal,tencent,miaodi,juhe,aliyun}
+  -p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}, --product {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}
                         使用指定产品攻击,比如网易netease/云之讯/创蓝253/腾讯云/阿里云
   -c CONFIG, --config CONFIG
                         指定配置文件
@@ -22,6 +22,7 @@ optional arguments:
                         进程数,默认5
   -m MESSAGE, --message MESSAGE
                         自定义的消息体,如果支持的话
+  -v, --verbose         详细日志
 
 ```
 
@@ -85,3 +86,16 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 # 本项目仅供学习研究,请勿用于非法用途
 
+
+# ChangeLog
+
+#### 2018-05-02
+
++ 增加 colored log 日志配置
++ 增加 `-v/--verbose` 参数命令用于调试
++ 增加 `get_msg_content` 方法用于智能获取发送的短信内容(依据不同产品决定是否可以使用-m参数作为短信内容)
+
+#### 2018-04-28
+
++ 单一文件改为插件化形式,动态支持加载plugins目录下的其他短信产品.
++ 初版发布

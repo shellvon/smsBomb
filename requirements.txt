@@ -1,1 +1,2 @@
 requests==2.18.4
+coloredlogs==9.3.1

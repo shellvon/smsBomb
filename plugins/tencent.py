@@ -10,8 +10,8 @@ from smsBomb import SmsPlugin
 class TencentPlugin(SmsPlugin):
     """腾讯短信
 
-        文档: https://cloud.tencent.com/document/product/382/5976
-        """
+    文档: https://cloud.tencent.com/document/product/382/5976
+    """
 
     API_URLS = {
         'send': 'https://yun.tim.qq.com/v5/tlssmssvr/sendsms',
@@ -23,6 +23,7 @@ class TencentPlugin(SmsPlugin):
         self.tpl_content = kwargs.get('tpl_content', '')
         if not self.tpl_content:
             self.tpl_content = self.get_one_tpl()
+            self.logger.debug('没有默认的模版消息,随机获取:%s', self.tpl_content)
         self.tpl_param = kwargs.get('tpl_params', [])
 
     @staticmethod
@@ -65,6 +66,7 @@ class TencentPlugin(SmsPlugin):
             'ts': ts,
             'mobile': mobile
         }
+        # 字段根据公式 sha256（appkey=$appkey&random=$random&time=$time&mobile=$mobile）生成
         plain_text = 'appkey={appkey}&random={nonce}&time={ts}&mobile={mobile}'.format(
             **data).encode('utf-8')
         msg = self.tpl_content.format(None, *self.tpl_param)
@@ -73,7 +75,6 @@ class TencentPlugin(SmsPlugin):
             "extend": "",
             "msg": msg,
             "sig": self.checksum(plain_text),
-            # "sig" 字段根据公式 sha256（appkey=$appkey&random=$random&time=$time&mobile=$mobile）生成
             "tel": {
                 "mobile": str(mobile),
                 "nationcode": "86"
@@ -85,5 +86,5 @@ class TencentPlugin(SmsPlugin):
         url = '{0}?sdkappid={1}&random={2}'.format(
             self.api, self.auth['app_id'], nonce)
         resp = requests.post(url, data=json.dumps(payloads)).json()
-        print(self, resp)
+        self.logger.info(resp)
         return resp['result'] == 0
