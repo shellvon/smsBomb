@@ -3,8 +3,9 @@
 
 ```
 usage: smsBomb.py [-h] -t TARGET [-n TIMES]
-                  [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}]
+                  [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}]
                   [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE] [-v]
+                  [-x PROXY]
 
 短信轰炸机
 
@@ -14,7 +15,7 @@ optional arguments:
                         指定攻击目标手机号
   -n TIMES, --times TIMES
                         指定攻击次数,默认10
-  -p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}, --product {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,submail,tencent,ucp,yunpian}
+  -p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}, --product {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}
                         使用指定产品攻击,比如网易netease/云之讯/创蓝253/腾讯云/阿里云
   -c CONFIG, --config CONFIG
                         指定配置文件
@@ -22,7 +23,12 @@ optional arguments:
                         进程数,默认5
   -m MESSAGE, --message MESSAGE
                         自定义的消息体,如果支持的话
-  -v, --verbose         详细日志
+  -v, -verbose          日志级别,-v,-vv,-vvv
+  -x PROXY, --proxy PROXY
+                        设置发起请求时的代理http/https,如果没设置将自动尝试环境变量 HTTP_PROXY 和
+                        HTTPS_PROXY
+
+See https://von.sh/smsBomb
 
 ```
 
@@ -44,15 +50,12 @@ optional arguments:
 
 目前，项目中实现了以下服务商提供的短信发送服务:
 
-```python
- # 目前支持的短信渠道
-__supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'smsbao', 'yunpian', 'normal', 'tencent',
-                           'miaodi', 'juhe', 'aliyun']
 
-```
+#### 目前支持的短信渠道
 
-+ [luosimao](https://luosimao.com/)
-+ [赛邮:submail](https://www.mysubmail.com)
+
++ [螺丝帽:luosimao](https://luosimao.com/)
++ ~~[赛邮:submail](https://www.mysubmail.com)~~
 + [网易:netease](http://dev.netease.im/docs/product/%E7%9F%AD%E4%BF%A1/%E7%9F%AD%E4%BF%A1%E6%8E%A5%E5%8F%A3%E6%8C%87%E5%8D%97)
 + [创蓝253:cl253](https://zz.253.com/v5.html)
 + [云之讯:ucp](http://www.ucpaas.com/)
@@ -69,7 +72,7 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 默认配置: `config/sms.json`
 
-配置内容是一个数组,其中每一个元素代码一个可用于攻击对产品配置, 其中字段说明参见下表:
+配置内容是一个数组,其中每一个元素代表一个可用于攻击的产品配置, 其中字段说明参见下表:
 
 #### 字段说明
 
@@ -84,7 +87,6 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 | method  | string | 请求方式     | 否 | 默认为GET请求,此配置依赖于各产品如何实现`send`方法的 |
 | enable_custom_msg| bool | 是否支持自定义消息体| 否| 默认是不支持,如果设置true,参数-m中的消息将作为短信内容进行发送|
 | weight  | int    | 权重        | 否 | 默认值1,最小1,当weight为0则标志为节点不可以用,此数字越大代表被选中的概率越大|
-
 
 
 # 发散思维
@@ -112,6 +114,9 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 #### 2018-05-03
 
++ 支持设置`http/https`代理,使用参数`-x, --proxy`指定
++ 更新发起时请求头
++ ~~移除submail的支持~~
 + 将原来的 **随机算法** 修改为 **加权随机负载均衡** 算法， 配置文件增加`weight`参数用于此操作。
 + 支持简单的故障节点剔除(当没有可用的节点时会认为所有节点都可用,但并不会专门的做探活)
 + 增加攻击进度(`-v/--verbose`可看)

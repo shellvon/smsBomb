@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import requests
 from smsBomb import SmsPlugin
 
 
@@ -23,6 +22,6 @@ class Cl253Plugin(SmsPlugin):
             'phone': str(mobile),
             'msg': self.get_msg_content(kwargs, 'msg')
         })
-        resp = requests.post(self.api, json=kwargs).json()
+        resp = self._req.post(self.api, json=kwargs).json()
         self.logger.info(resp)
         return resp['code'] == '0'

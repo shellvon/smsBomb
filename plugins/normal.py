@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import requests
 from smsBomb import SmsPlugin
 
 
@@ -25,7 +24,7 @@ class NormalPlugin(SmsPlugin):
             payloads[k] = v
 
         self.logger.debug('普通消息,进行参数替换:%s', payloads)
-        resp = requests.request(self.method, self.api,
-                                headers=self.headers, params=payloads)
+        resp = self._req.request(self.method, self.api,
+                                 headers=self.headers, params=payloads)
         self.logger.info(resp.content)
         return resp.status_code == 200

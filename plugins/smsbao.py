@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import hashlib
-import requests
+
 from smsBomb import SmsPlugin
 
 
@@ -35,6 +35,6 @@ class SmsbaoPlugin(SmsPlugin):
             'c': self.get_msg_content(kwargs, 'msg'),
             'm': mobile
         }
-        code = int(requests.get(self.api, params=payload).content)
+        code = int(self._req.get(self.api, params=payload).content)
         self.logger.info(self.ERROR_CODES.get(code, '未知错误代码:%d' % code))
         return code == 0

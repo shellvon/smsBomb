@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import random
-import requests
+
 from smsBomb import SmsPlugin
 
 
@@ -17,7 +17,7 @@ class YunpianPlugin(SmsPlugin):
     }
 
     def get_one_tpl(self):
-        resp = requests.post(self.API_URLS['tpl_get'], {
+        resp = self._req.post(self.API_URLS['tpl_get'], {
             'apikey': self.auth['api_key']}).json()
         tpl = random.choice(resp)
         return tpl
@@ -30,6 +30,6 @@ class YunpianPlugin(SmsPlugin):
             'apikey': self.auth['api_key'],
             'text': self.get_one_tpl()['tpl_content']
         }
-        resp = requests.post(self.api, data=payloads).json()
+        resp = self._req.post(self.api, data=payloads).json()
         self.logger.info(resp)
         return resp['code'] == 0

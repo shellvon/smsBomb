@@ -1,11 +1,11 @@
 # coding=utf-8
 
-import json
-import hmac
 import base64
-import requests
-import urllib.parse
 import datetime
+import hmac
+import json
+import urllib.parse
+
 from smsBomb import SmsPlugin
 
 
@@ -87,8 +87,8 @@ class AliyunPlugin(SmsPlugin):
         body = 'Signature={}&{}'.format(sign, stringify(**params))
         self.logger.debug('拼接完成请求体: %s', body)
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        resp = requests.post(self.api, headers=headers,
-                             data=body.encode('utf-8')).json()
+        resp = self._req.post(self.api, headers=headers,
+                              data=body.encode('utf-8')).json()
         self.logger.info(resp)
 
         return resp['Code'] == 'OK'

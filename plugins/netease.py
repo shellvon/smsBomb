@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import hashlib
-import requests
+
 from smsBomb import SmsPlugin
 
 
@@ -38,7 +38,7 @@ class NeteasePlugin(SmsPlugin):
         kwargs.update({'mobile': mobile})
         headers = self.headers
         self.logger.debug('请求头: %s', headers)
-        resp = requests.post(
+        resp = self._req.post(
             self.api, headers=headers, data=kwargs).json()
         self.logger.info(resp)
         return resp['code'] == 200

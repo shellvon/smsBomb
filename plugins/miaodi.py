@@ -1,8 +1,8 @@
 # coding=utf-8
 
-import time
 import hashlib
-import requests
+import time
+
 from smsBomb import SmsPlugin
 
 
@@ -32,6 +32,6 @@ class MiaodiPlugin(SmsPlugin):
             'timestamp': ts,
             'sig': self.checksum(ts)
         })
-        resp = requests.post(self.api, data=kwargs).json()
+        resp = self._req.post(self.api, data=kwargs).json()
         self.logger.info(resp)
         return resp['respCode'] == '00000'

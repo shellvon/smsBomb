@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import requests
 from smsBomb import SmsPlugin
 
 
@@ -30,6 +29,6 @@ class UcpPlugin(SmsPlugin):
             'appid': self.app_id,
             'mobile': str(mobile)
         })
-        resp = requests.post(self.api, json=kwargs).json()
+        resp = self._req.post(self.api, json=kwargs).json()
         self.logger.info(resp)
         return resp['code'] == '000000'

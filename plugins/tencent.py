@@ -1,9 +1,9 @@
 # coding=utf-8
 
+import hashlib
 import json
 import random
-import hashlib
-import requests
+
 from smsBomb import SmsPlugin
 
 
@@ -53,7 +53,7 @@ class TencentPlugin(SmsPlugin):
                 'offset': 0
             }
 
-        resp = requests.post(url, json.dumps(payloads)).json()
+        resp = self._req.post(url, json.dumps(payloads)).json()
         return random.choice(resp['data'])['text']
 
     def send(self, mobile, **kwargs):
@@ -85,6 +85,6 @@ class TencentPlugin(SmsPlugin):
 
         url = '{0}?sdkappid={1}&random={2}'.format(
             self.api, self.auth['app_id'], nonce)
-        resp = requests.post(url, data=json.dumps(payloads)).json()
+        resp = self._req.post(url, data=json.dumps(payloads)).json()
         self.logger.info(resp)
         return resp['result'] == 0

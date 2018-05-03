@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import requests
 from smsBomb import SmsPlugin
 
 
@@ -18,6 +17,6 @@ class LuosimaoPlugin(SmsPlugin):
         basic_auth = ('api', 'key-%s' % self.auth['key'])
         kwargs['mobile'] = mobile
         kwargs['message'] = self.get_msg_content(kwargs, 'message')
-        resp = requests.post(self.api, auth=basic_auth, data=kwargs).json()
+        resp = self._req.post(self.api, auth=basic_auth, data=kwargs).json()
         self.logger.info(resp)
         return resp['error'] == 0
