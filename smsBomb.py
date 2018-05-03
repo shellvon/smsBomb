@@ -192,7 +192,7 @@ def load_config(cfg, product=None):
     :param product: 如果指定了产品则只返回该产品配置否则返回所有配置
     :return:
     """
-    with open(cfg, 'r') as config_file:
+    with open(cfg, 'rb') as config_file:
         config = json.loads(config_file.read())
     if product:
         return list(filter(lambda x: x['product'] == product, config))
