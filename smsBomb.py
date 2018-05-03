@@ -122,15 +122,34 @@ class SmsBomb(LoggerMixin):
         self.process_num = kwargs.get('process_num', 5)
         self.custom_msg = kwargs.get('msg', None)
         self.prefix = kwargs.get('prefix', '')
+        self.max_allowed_failed_rate = 0.9 # 最大允许的失败率.超过这个失败率之后会宣告失败
+        self.failed_config_lst = []
+
+    def _random_weight_select(self):
+        weight_lst = [[k, v] for (k,v) in enumerate(self.config_lst) for _ in range(v.get('weight', 1))]
+        if weight_lst:
+            return random.choice(weight_lst)
+        return None
+
+    def re_config(self, config_lst):
+        self.config_lst = config_lst
+        self.failed_config_lst = []
 
     def start(self, config_lst=None):
+        if config_lst:
+            self.re_config(config_lst)
         pool = multiprocessing.Pool(processes=self.process_num)
         start_time = time.clock()
-        config_lst = config_lst if config_lst else self.config_lst
         success_cnt = 0
         failed_cnt = 0
-        while success_cnt < self.limit and (failed_cnt / self.limit) <= 0.9:
-            current_config = random.choice(config_lst)
+        while success_cnt < self.limit and (failed_cnt / self.limit) <= self.max_allowed_failed_rate:
+            index, current_config = self._random_weight_select()
+            if not current_config:
+                # 如果已经找不到配置了, 尝试把之前错误的配置重新分配,并标记失败次数
+                self.logger.warning('没有可用配置可供使用!尝试重置配置列表:%s', self.failed_config_lst)
+                self.re_config(self.failed_config_lst)
+                failed_cnt += 1
+                continue
             key = self.prefix + current_config['product']
             cls = current_config.get('product').title() + 'Plugin'
             obj = self.plugins.get(key)
@@ -146,7 +165,17 @@ class SmsBomb(LoggerMixin):
             if success:
                 success_cnt += 1
             else:
+                self.logger.warning('节点%s请求失败,尝试降低此配置的优先级,并标记此节点已经失败', current_config)
+                # 失败,尝试降低修改此配置的优先级,并标记此节点已经失败.
+                self.config_lst[index]['weight'] = max(current_config.get('w', 1) - 1, 0)
+                # 由于权重原因可能会重复加入到failed_config_lst,
+                # 因此这里的权重全设置为1,保证之后权重展开的时候只有一次.
+                current_config['weight'] = 1
+                self.failed_config_lst.append(current_config)
                 failed_cnt += 1
+            self.logger.debug('攻击进度(成功数/期望攻击次数): %d/%d = %.2f%%, 实际攻击目标次数(含失败): %d(失败%d次)',
+                              success_cnt, self.limit, success_cnt * 100/self.limit, success_cnt+failed_cnt, failed_cnt)
+
         pool.close()
         pool.join()
         end_time = time.clock()

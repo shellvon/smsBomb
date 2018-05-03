@@ -83,6 +83,7 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 | api     | string | 请求地址     | 否 | 如果写了此API地址则请求发起至此API，否则发起之对应产品的默认配置API, 参见API_URLS|
 | method  | string | 请求方式     | 否 | 默认为GET请求,此配置依赖于各产品如何实现`send`方法的 |
 | enable_custom_msg| bool | 是否支持自定义消息体| 否| 默认是不支持,如果设置true,参数-m中的消息将作为短信内容进行发送|
+| weight  | int    | 权重        | 否 | 默认值1,最小1,当weight为0则标志为节点不可以用,此数字越大代表被选中的概率越大|
 
 
 
@@ -108,6 +109,12 @@ __supported_sms_service = ['luosimao', 'submail', 'netease', 'cl253', 'ucp', 'sm
 
 
 # ChangeLog
+
+#### 2018-05-03
+
++ 将原来的 **随机算法** 修改为 **加权随机负载均衡** 算法， 配置文件增加`weight`参数用于此操作。
++ 支持简单的故障节点剔除(当没有可用的节点时会认为所有节点都可用,但并不会专门的做探活)
++ 增加攻击进度(`-v/--verbose`可看)
 
 #### 2018-05-02
 
