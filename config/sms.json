@@ -211,7 +211,8 @@
     "auth": {
       "account": "N1884706",
       "password": "FhZqIplaXSf637"
-    }
+    },
+    "enable_custom_msg": true
   },
   {
     "product": "cl253",
@@ -222,7 +223,8 @@
     "auth": {
       "account": "N5363870",
       "password": "Jfl3z7r2Hi6a88"
-    }
+    },
+    "enable_custom_msg": true
   },
   {
     "product": "cl253",
@@ -233,7 +235,8 @@
     "auth": {
       "account": "N4625148",
       "password": "ySBCfmMDjXbdeb"
-    }
+    },
+    "enable_custom_msg": true
   },
   {
     "product": "yunpian",
