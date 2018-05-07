@@ -32,6 +32,12 @@ See https://von.sh/smsBomb
 
 ```
 
+# 屏幕截图
+
+![截图效果](./screenshot/bomb-gui.png)
+
+> Kivy 程序并没有经过严格的测试,慎用!
+
 
 # 原理
 
@@ -111,6 +117,12 @@ See https://von.sh/smsBomb
 
 
 # ChangeLog
+
+#### 2018-05-07
+
++ 增加 [Kivy](https://github.com/kivy/kivy) 编写 GUI 程序
++ 优化调整 `smsBomb.start` 支持进度回调
++ 修复log在 Kivy 框架下不展示的BUG, 参见[kivy/kivy#4113](https://github.com/kivy/kivy/issues/4113)
 
 #### 2018-05-03
 

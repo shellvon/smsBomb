@@ -1,0 +1,166 @@
+#:import C kivy.utils.get_color_from_hex
+
+<CustomLabel@Label>:
+    font_size: '20dp'
+    # font_name: 'msyh.ttf'
+    color: C('#000000')
+    bold: True
+    halign: 'right'
+    valign: 'center'
+    italic: True
+
+<CustomButton@Button>
+    font_size: '30dp'
+    color: C('#f90003')
+    background_color: C('#66d0dd')
+    bold: True
+    italic: True
+
+<TextButton@Button>:
+    color: 1, 1, 1, 1
+    background_color: 0xbb / 255., 0xad / 255., 0xa0 / 255., 1.
+    background_normal: 'data/round.png'
+    background_down: 'data/round.png'
+    size_hint_y: None
+    height: '48dp'
+    font_size: '20dp'
+    bold: True
+
+<SmsBomber>:
+    rows: 4
+    cols: 1
+    canvas:
+        Color:
+            rgb: C('#faf8ef')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        padding: '10dp'
+        spacing: '10dp'
+        size_hint_y: 0.5
+        canvas:
+            Color:
+                rgb: C('#fdaf71')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: 'sms bomb'
+            font_size: '80dp'
+            color: C('#776e65')
+            bold: True
+            Image:
+                center: self.parent.center
+                source: 'bomb.png'
+                size_hint_x: 0.4
+                allow_stretch: True
+    GridLayout:
+        cols: 2
+        rows: 5
+        padding: 20
+        spacing: 20
+        CustomLabel:
+            text: 'Attack Target([color=ff3333]*[/color]):'
+            markup: True
+        TextInput:
+            input_type: 'number'
+            input_filter: 'int'
+            hint_text: 'Target phone number'
+            focus: True
+            id: target
+            keyboard_suggestions: True
+
+        CustomLabel:
+            text: 'Attack Times:'
+        TextInput:
+            hint_text: 'How many times you want attack ?'
+            text: '5'
+            id: times
+            input_filter: 'int'
+            keyboard_suggestions: True
+        CustomLabel:
+            text: 'Products:'
+        TextInput:
+            hint_text: 'What product you want to use ?'
+            text: ''
+            id: product
+            keyboard_suggestions: True
+        CustomLabel:
+            text: 'Process Num:'
+        TextInput:
+            hint_text: 'Process number you want to run'
+            multiline: False
+            text: '5'
+            id: process_num
+            input_filter: 'int'
+            keyboard_suggestions: True
+        CustomLabel:
+            text: 'HTTP(S) Proxy:'
+        TextInput:
+            multiline: False
+            hint_text: 'E.g: https://ip:port'
+            focus: True
+            id: proxy
+            keyboard_suggestions: True
+    GridLayout:
+        size_hint_y: 0.2
+        cols: 2
+        rows: 1
+        CustomLabel:
+            text: 'Progression: {0:.2f}%'.format(pb.value * 100 / pb.max)
+            height: '48dp'
+        ProgressBar:
+            id: pb
+            max: root.attack_cnt
+            value: root.current_attacked_cnt
+            height: '48dp'
+            padding: 20,20
+
+    GridLayout:
+        cols: 2
+        rows: 1
+        size_hint_y: 0.5
+        halign: 'left'
+        canvas:
+            Color:
+                rgb: C('#cbcbcb')
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        GridLayout:
+            cols: 1
+            rows: 1
+        GridLayout:
+            cols: 1
+            padding: 20,40
+            CustomButton:
+                text: "Attack!"
+                on_press: root.attack()
+
+
+<ErrorPopup>:
+    size_hint: None, None
+    title: 'Oops...'
+    bold: True
+    size: '300dp', '300dp'
+    separator_color: C('#cbcbcb')
+    title_size: '20sp'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '10dp'
+        padding: '10dp'
+
+        Label:
+            font_size: '20sp'
+            bold: True
+            text: root.message
+            text_size: self.width - dp(20), None
+
+        BoxLayout:
+            size_hint_y: None
+            height: '68dp'
+            spacing: '10dp'
+            TextButton:
+                text: 'OK'
+                on_press: root.dismiss()
