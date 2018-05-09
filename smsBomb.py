@@ -233,7 +233,7 @@ def load_config(cfg, product=None):
     :type  product: str
     :return:
     """
-    with open(cfg, 'r') as config_file:
+    with open(cfg, 'r', encoding='utf8') as config_file:
         config = json.loads(config_file.read())
     if product:
         return list(filter(lambda x: x['product'] == product, config))
