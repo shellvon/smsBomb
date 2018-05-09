@@ -18,7 +18,7 @@ class MiaodiPlugin(SmsPlugin):
 
     @property
     def curtime(self):
-        return time.strftime('%Y%M%d%H%m%s')
+        return time.strftime('%Y%m%d%H%M%S')
 
     def checksum(self, ts):
         plain_text = '{sid}{token}{ts}'.format(
