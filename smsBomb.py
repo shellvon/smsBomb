@@ -164,7 +164,7 @@ class SmsBomb(LoggerMixin):
         self.config_lst = config_lst
         self.failed_config_lst = []
 
-    def progess_info(self, success_cnt, failed_cnt, limit, force_finished=False):
+    def progress_info(self, success_cnt, failed_cnt, limit, force_finished=False):
         failed_rate = failed_cnt / limit
         self.logger.debug('攻击进度(成功数/期望攻击次数): %d/%d = %.2f%%, 实际攻击目标次数(含失败): %d(失败%d次, 失败率: %.2f%%)',
                           success_cnt, limit, success_cnt * 100 / limit,
@@ -186,7 +186,7 @@ class SmsBomb(LoggerMixin):
         success_cnt = 0
         failed_cnt = 0
         failed_rate = 0
-        cb = cb if cb else self.progess_info
+        cb = cb if cb else self.progress_info
 
         self.logger.info('Start attacking phone: %s', self.target)
         while success_cnt < self.limit and failed_rate <= self.max_allowed_failed_rate:

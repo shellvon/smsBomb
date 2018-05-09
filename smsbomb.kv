@@ -2,7 +2,6 @@
 
 <CustomLabel@Label>:
     font_size: '20dp'
-    # font_name: 'msyh.ttf'
     color: C('#000000')
     bold: True
     halign: 'right'
@@ -16,11 +15,12 @@
     bold: True
     italic: True
 
+<ChineseInput@TextInput>
+    font_name: './data/fzht.ttf'
+
 <TextButton@Button>:
     color: 1, 1, 1, 1
-    background_color: 0xbb / 255., 0xad / 255., 0xa0 / 255., 1.
-    background_normal: 'data/round.png'
-    background_down: 'data/round.png'
+    background_color: C('#bbada0')
     size_hint_y: None
     height: '48dp'
     font_size: '20dp'
@@ -52,43 +52,49 @@
             bold: True
             Image:
                 center: self.parent.center
-                source: 'bomb.png'
+                source: 'data/bomb.png'
                 size_hint_x: 0.4
                 allow_stretch: True
     GridLayout:
         cols: 2
-        rows: 5
+        rows: 6
         padding: 20
         spacing: 20
+        size_hint_y: 1.5
         CustomLabel:
             text: 'Attack Target([color=ff3333]*[/color]):'
             markup: True
-        TextInput:
+        ChineseInput:
             input_type: 'number'
             input_filter: 'int'
             hint_text: 'Target phone number'
             focus: True
             id: target
             keyboard_suggestions: True
-
+        CustomLabel:
+            text: 'Message Body:'
+        ChineseInput:
+            hint_text: 'Custom message if supported'
+            id: custom_message
+            keyboard_suggestions: True
         CustomLabel:
             text: 'Attack Times:'
-        TextInput:
+        ChineseInput:
             hint_text: 'How many times you want attack ?'
             text: '5'
             id: times
             input_filter: 'int'
             keyboard_suggestions: True
         CustomLabel:
-            text: 'Products:'
-        TextInput:
+            text: 'Product:'
+        ChineseInput:
             hint_text: 'What product you want to use ?'
             text: ''
             id: product
             keyboard_suggestions: True
         CustomLabel:
             text: 'Process Num:'
-        TextInput:
+        ChineseInput:
             hint_text: 'Process number you want to run'
             multiline: False
             text: '5'
@@ -97,7 +103,7 @@
             keyboard_suggestions: True
         CustomLabel:
             text: 'HTTP(S) Proxy:'
-        TextInput:
+        ChineseInput:
             multiline: False
             hint_text: 'E.g: https://ip:port'
             focus: True
@@ -133,7 +139,7 @@
             rows: 1
         GridLayout:
             cols: 1
-            padding: 20,40
+            padding: 10
             CustomButton:
                 text: "Attack!"
                 on_press: root.attack()
@@ -152,6 +158,7 @@
         padding: '10dp'
 
         Label:
+            font_name: './data/fzht.ttf'
             font_size: '20sp'
             bold: True
             text: root.message

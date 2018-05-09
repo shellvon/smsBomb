@@ -14,6 +14,10 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.properties import NumericProperty, StringProperty
 
+from kivy.config import Config
+
+Config.set('graphics', 'resizable', False)  # disabled.
+
 
 class SmsBomber(GridLayout):
     attack_cnt = NumericProperty(1)
@@ -49,12 +53,14 @@ class SmsBomber(GridLayout):
         self.attack_cnt = times
         product = self.ids.product.text or None
         process_num = int(self.ids.process_num.text or 5)
+        custom_message = self.ids.custom_message.text or None
         proxy = self.ids.proxy.text or None
         config = smsBomb.load_config('config/sms.json', product)
         if not config:
             popup = ErrorPopup('no configuration available')
             popup.open()
             return
+
         app = smsBomb.SmsBomb(
             self.sms_services,
             config,
@@ -63,6 +69,7 @@ class SmsBomber(GridLayout):
             proxy=proxy,
             process_num=process_num,
             times=times,
+            msg=custom_message
         )
 
         threading.Thread(target=app.start,
@@ -87,13 +94,10 @@ class SmsBombApp(App):
 
     def build(self):
         my_plugins = smsBomb.load_plugins(plugins)
-
+        self.title = '短信轰炸机 By shellvon'
         return SmsBomber(self, my_plugins)
 
 
 if __name__ == '__main__':
     smsBomb.setup_logger('smsBomb.SmsBomb', verbose_count=2)
-    # import logging
-    #
-    # multiprocessing.log_to_stderr(logging.DEBUG)
     SmsBombApp().run()
