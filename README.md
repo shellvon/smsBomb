@@ -5,40 +5,6 @@
 
 本程序使用Python3.6.4 在 Mac 上开发，不兼容 Python2.x。如果多版本Python, 您可以尝试 PyEnv 或者 Anaconda
 
-程序结构说明:
-
-```
-
-├── README.md
-├── __init__.py
-├── app.py                      <-- GUI 版本主程序,请执行 python app.py 运行
-├── config
-│   └── sms.json                <-- 配置文件, 参见下方原理以及配置说明
-├── data                        <-- GUI程序使用的图片及其字体
-│   ├── bomb.png
-│   └── fzht.ttf
-├── plugins                     <-- 插件目录,每一个文件可支持一种产品的攻击形式
-│   ├── __init__.py
-│   ├── aliyun.py
-│   ├── cl253.py
-│   ├── juhe.py
-│   ├── luosimao.py
-│   ├── miaodi.py
-│   ├── netease.py
-│   ├── normal.py
-│   ├── smsbao.py
-│   ├── tencent.py
-│   ├── ucp.py
-│   └── yunpian.py
-├── requirements-gui.txt        <--- GUI 版本依赖
-├── requirements.txt            <--- CLI 版本依赖
-├── screenshot                  <--- 截屏文件
-│   └── bomb-gui.png
-├── smsBomb.py                  <-- CLI 版本主程序,请执行python smsBomb.py -h 查看
-└── smsbomb.kv                  <-- GUI 版本的kv文件,请参见Kivy文档
-```
-
-
 #### CLI 版本
 
 ```
@@ -72,7 +38,7 @@ See https://von.sh/smsBomb
 
 ```
 
-# GUI 版本(屏幕截图)
+#### GUI 版本(屏幕截图)
 
 ![截图效果](./screenshot/bomb-gui.png)
 
@@ -153,7 +119,42 @@ See https://von.sh/smsBomb
 
 比如结合 PyGithub 调用 Github 的搜索接口，将搜索到的重要的一些 repo 再利用 truffleHog 尝试深挖。
 
-# 本项目仅供学习研究，请勿用于非法用途
+
+# 程序结构:
+
+```
+
+├── README.md
+├── __init__.py
+├── app.py                      <-- GUI 版本主程序,请执行 python app.py 运行
+├── config
+│   └── sms.json                <-- 配置文件, 参见下方原理以及配置说明
+├── data                        <-- GUI程序使用的图片及其字体
+│   ├── bomb.png
+│   └── fzht.ttf
+├── plugins                     <-- 插件目录,每一个文件可支持一种产品的攻击形式
+│   ├── __init__.py
+│   ├── aliyun.py
+│   ├── cl253.py
+│   ├── juhe.py
+│   ├── luosimao.py
+│   ├── miaodi.py
+│   ├── netease.py
+│   ├── normal.py
+│   ├── smsbao.py
+│   ├── tencent.py
+│   ├── ucp.py
+│   └── yunpian.py
+├── requirements-gui.txt        <--- GUI 版本依赖
+├── requirements.txt            <--- CLI 版本依赖
+├── screenshot                  <--- 截屏文件
+│   └── bomb-gui.png
+├── smsBomb.py                  <-- CLI 版本主程序,请执行python smsBomb.py -h 查看
+└── smsbomb.kv                  <-- GUI 版本的kv文件,请参见Kivy文档
+```
+
+
+# 本项目仅供学习研究，请勿用于非法用途!!!!!!!!!!!
 
 
 # ChangeLog
