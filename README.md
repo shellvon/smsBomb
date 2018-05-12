@@ -3,15 +3,17 @@
 
 # 使用说明
 
-本程序使用Python3.6.4 在 Mac 上开发，不兼容 Python2.x。如果多版本Python, 您可以尝试 PyEnv 或者 Anaconda
+本程序使用 Python3.6.4 在 Mac 上开发，不兼容 Python2.x。如果多版本Python, 您可以尝试 PyEnv 或者 Anaconda
 
 #### CLI 版本
 
 ```
-usage: smsBomb.py [-h] -t TARGET [-n TIMES]
-                  [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}]
-                  [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE] [-v]
-                  [-x PROXY]
+usage: python -m smsBomb [-h] -t TARGET [-n TIMES]
+                         [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}]
+                         [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE] [-v]
+                         [-x PROXY]
+python -m smsBomb: error: the following arguments are required: -t/--target
+
 
 短信轰炸机
 
@@ -38,7 +40,9 @@ See https://von.sh/smsBomb
 
 ```
 
-#### GUI 版本(屏幕截图)
+#### GUI 版本
+
+您可以执行 `python -m smsBomb.gui` 执行，效果图如下:
 
 ![截图效果](./screenshot/bomb-gui.png)
 
@@ -124,33 +128,37 @@ See https://von.sh/smsBomb
 
 ```
 
+├── LICENSE
 ├── README.md
-├── __init__.py
-├── app.py                      <-- GUI 版本主程序,请执行 python app.py 运行
 ├── config
-│   └── sms.json                <-- 配置文件, 参见下方原理以及配置说明
-├── data                        <-- GUI程序使用的图片及其字体
-│   ├── bomb.png
-│   └── fzht.ttf
-├── plugins                     <-- 插件目录,每一个文件可支持一种产品的攻击形式
-│   ├── __init__.py
-│   ├── aliyun.py
-│   ├── cl253.py
-│   ├── juhe.py
-│   ├── luosimao.py
-│   ├── miaodi.py
-│   ├── netease.py
-│   ├── normal.py
-│   ├── smsbao.py
-│   ├── tencent.py
-│   ├── ucp.py
-│   └── yunpian.py
-├── requirements-gui.txt        <--- GUI 版本依赖
-├── requirements.txt            <--- CLI 版本依赖
-├── screenshot                  <--- 截屏文件
+│   └── sms.json            <--- 配置文件, 参见上方原理以及配置说明
+├── requirements-gui.txt    <--- GUI 版本依赖
+├── requirements.txt        <--- CLI 版本依赖
+├── screenshot              <--- 截屏文件,用于readme
 │   └── bomb-gui.png
-├── smsBomb.py                  <-- CLI 版本主程序,请执行python smsBomb.py -h 查看
-└── smsbomb.kv                  <-- GUI 版本的kv文件,请参见Kivy文档
+└── smsBomb
+    ├── __init__.py
+    ├── __main__.py
+    ├── cli.py              <--- CLI 版本主程序,请执行python -m smsBomb
+    ├── data                <-- GUI程序使用的图片及其字体
+    │   ├── bomb.png
+    │   └── fzht.ttf
+    ├── gui.py              <--- 截GUI 版本主程序,请执行 python -m smsBobm.gui 运行
+    ├── plugins             <-- 插件目录,每一个文件可支持一种产品的攻击形式
+    │   ├── aliyun.py
+    │   ├── cl253.py
+    │   ├── juhe.py
+    │   ├── luosimao.py
+    │   ├── miaodi.py
+    │   ├── netease.py
+    │   ├── normal.py
+    │   ├── smsbao.py
+    │   ├── tencent.py
+    │   ├── ucp.py
+    │   └── yunpian.py
+    ├── smsBomb.py          <-- 程序逻辑
+    └── smsbomb.kv          <-- GUI描述文件
+
 ```
 
 
@@ -158,6 +166,12 @@ See https://von.sh/smsBomb
 
 
 # ChangeLog
+
+#### 2018-05-12
+
++ 调整修改日志级别
++ 调整程序目录结构(修改为 -m 模块化执行, cli/gui 更突出功能与作用)
++ 调整文档
 
 #### 2018-05-09
 
@@ -190,3 +204,10 @@ See https://von.sh/smsBomb
 
 + 单一文件改为插件化形式，动态支持加载 plugins 目录下的其他短信产品.
 + 初版发布
+
+
+
+# 已知 BUGs.
+
++ 使用 PyInstaller 打完包之后提示 `Unable to find any valuable Window provider`.
++ `Ctrl + C` 在 multiptoceessing 下还未处理

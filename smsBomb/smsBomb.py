@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import argparse
 import importlib
 import json
 import logging
@@ -8,17 +7,13 @@ import multiprocessing
 import pkgutil
 import platform
 import random
-import sys
 import time
 import uuid
 
 import coloredlogs
 import requests
 
-import plugins
-
-__version__ = '0.0.1'
-__author__ = 'iamshellvon@gmail.com'
+from smsBomb import __version__
 
 
 def setup_logger(name, use_colors=True, verbose_count=0):
@@ -32,16 +27,16 @@ def setup_logger(name, use_colors=True, verbose_count=0):
     :type verbose_count: int
     :return:
     """
-    fmt = '[%(levelname).8s %(asctime)s %(module)s:%(lineno)d] %(message)s'
+    fmt = '[%(levelname).8s %(asctime)s %(name)s:%(lineno)d] %(message)s'
     datefmt = '%Y-%m-%d %H:%M:%S'
-    level = max(3 - verbose_count, 0) * 10
+    level = max(5 - verbose_count, 0) * 10
     logger = logging.getLogger(name)
     if use_colors:
         coloredlogs.install(logger=logger, level=level, fmt=fmt, datefmt=datefmt)
     else:
         logging.basicConfig(level=level, format=fmt, datefmt=datefmt)
     logging.getLogger('requests').setLevel(level)
-    return logging.getLogger(name)
+    return logger
 
 
 def load_plugins(namespace):
@@ -165,14 +160,15 @@ class SmsBomb(LoggerMixin):
         self.failed_config_lst = []
 
     def progress_info(self, success_cnt, failed_cnt, limit, force_finished=False):
-        failed_rate = failed_cnt / limit
-        self.logger.debug('攻击进度(成功数/期望攻击次数): %d/%d = %.2f%%, 实际攻击目标次数(含失败): %d(失败%d次, 失败率: %.2f%%)',
-                          success_cnt, limit, success_cnt * 100 / limit,
-                          success_cnt + failed_cnt, failed_cnt, failed_rate * 100)
         if success_cnt == limit or force_finished:
             self.logger.info(
                 '攻击完毕,成功: {0}次, 失败: {1}次'.format(
                     success_cnt, failed_cnt))
+            return
+        failed_rate = failed_cnt / limit
+        self.logger.debug('攻击进度(成功数/期望攻击次数): %d/%d = %.2f%%, 实际攻击目标次数(含失败): %d(失败%d次, 失败率: %.2f%%)',
+                          success_cnt, limit, success_cnt * 100 / limit,
+                          success_cnt + failed_cnt, failed_cnt, failed_rate * 100)
 
     def start(self, config_lst=None, cb=None):
         """
@@ -220,7 +216,10 @@ class SmsBomb(LoggerMixin):
                 self.failed_config_lst.append(current_config)
                 failed_cnt += 1
             cb(success_cnt, failed_cnt, self.limit)
-        cb(success_cnt, failed_cnt, self.limit, force_finished=True)
+
+        # 如果到结束的时候还不相等,则强制结束
+        if success_cnt != self.limit:
+            cb(success_cnt, failed_cnt, self.limit, force_finished=True)
 
 
 def load_config(cfg, product=None):
@@ -238,80 +237,3 @@ def load_config(cfg, product=None):
     if product:
         return list(filter(lambda x: x['product'] == product, config))
     return config
-
-
-def parse_command_line(sms_services):
-    """
-    :param sms_services: 支持短信产品列表
-    :type  sms_services: list
-    :return:
-    """
-    parser = argparse.ArgumentParser(description='短信轰炸机', epilog="See https://von.sh/smsBomb")
-    parser.add_argument('-t', '--target', type=int,
-                        required=True, help='指定攻击目标手机号')
-    parser.add_argument('-n', '--times', type=int,
-                        default=10, help='指定攻击次数,默认10')
-    parser.add_argument('-p', '--product',
-                        choices=sms_services,
-                        type=str,
-                        default=None,
-                        help='使用指定产品攻击,比如网易netease/云之讯/创蓝253/腾讯云/阿里云')
-    parser.add_argument('-c', '--config', type=str,
-                        default='config/sms.json', help='指定配置文件')
-    parser.add_argument('--process', dest='process_num',
-                        type=int, default=5, help='进程数,默认5')
-    parser.add_argument('-m', '--message', type=str, help='自定义的消息体,如果支持的话')
-    parser.add_argument('-v', '-verbose', dest="verbose_count",
-                        action="count", default=0, help='日志级别,-v,-vv,-vvv')
-
-    parser.add_argument('-x', '--proxy',
-                        type=str,
-                        default='',
-                        help="设置发起请求时的代理http/https,如果没设置将自动尝试环境变量 HTTP_PROXY 和 HTTPS_PROXY")
-
-    return parser.parse_args()
-
-
-def main():
-    # 插件前缀.
-    plugin_prefix = plugins.__name__ + '.'
-    # 加载目前已经有的所有短信插件.
-    sms_plugins = load_plugins(plugins)
-    # 支持的短信服务商.
-    supported_sms_service = [name.replace(
-        plugin_prefix, '') for name in sms_plugins.keys()]
-
-    args = parse_command_line(supported_sms_service)
-
-    logger = setup_logger(__name__,
-                          use_colors=sys.stdout.isatty(),
-                          verbose_count=args.verbose_count)
-    config = load_config(args.config, args.product)
-    logger.debug('成功加载配置文件:%s,产品:%s', args.config, args.product)
-    args.process_num = min(args.process_num, args.times)
-
-    if not config:
-        logger.error('短信轰炸机配置不可为空')
-        return
-
-    proxy_str = args.proxy
-    proxies = None
-    if proxy_str.lower().startswith('http://'):
-        proxies['http'] = proxy_str
-    elif proxy_str.lower().startswith('https://'):
-        proxies['https'] = proxy_str
-    elif proxy_str:
-        proxies['http'] = proxy_str['https'] = proxy_str
-
-    sms_bomb = SmsBomb(sms_plugins, config, args.target,
-                       process_num=args.process_num,
-                       msg=args.message,
-                       limit=args.times,
-                       prefix=plugin_prefix,
-                       proxies=proxies
-                       )
-    sms_bomb.start()
-
-
-if __name__ == '__main__':
-    main()

@@ -4,8 +4,7 @@ import threading
 
 import kivy
 
-import plugins
-import smsBomb
+from smsBomb import smsBomb, plugins
 
 kivy.require('1.10.1')
 
@@ -23,10 +22,11 @@ class SmsBomber(GridLayout):
     attack_cnt = NumericProperty(1)
     current_attacked_cnt = NumericProperty(0)
 
-    def __init__(self, app, sms_services):
+    def __init__(self, app, plugin_namespace):
         super(GridLayout, self).__init__()
         self.app = app
-        self.sms_services = sms_services
+        self.sms_services = smsBomb.load_plugins(plugin_namespace)
+        self.plugin_ns_str = plugin_namespace.__name__ + '.'
 
     def refresh_progress_bar(
             self,
@@ -65,7 +65,7 @@ class SmsBomber(GridLayout):
             self.sms_services,
             config,
             target_phone,
-            prefix='plugins.',
+            prefix=self.plugin_ns_str,
             proxy=proxy,
             process_num=process_num,
             times=times,
@@ -93,11 +93,10 @@ class SmsBombApp(App):
         super(SmsBombApp, self).__init__()
 
     def build(self):
-        my_plugins = smsBomb.load_plugins(plugins)
         self.title = '短信轰炸机 By shellvon'
-        return SmsBomber(self, my_plugins)
+        return SmsBomber(self, plugins)
 
 
 if __name__ == '__main__':
-    smsBomb.setup_logger('smsBomb.SmsBomb', verbose_count=2)
+    smsBomb.setup_logger('smsBomb', verbose_count=2)
     SmsBombApp().run()

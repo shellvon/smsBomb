@@ -40,5 +40,5 @@ class NeteasePlugin(SmsPlugin):
         self.logger.debug('请求头: %s', headers)
         resp = self._req.post(
             self.api, headers=headers, data=kwargs).json()
-        self.logger.info(resp)
+        self.logger.debug(resp)
         return resp['code'] == 200
