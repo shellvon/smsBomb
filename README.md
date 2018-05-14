@@ -1,9 +1,10 @@
 # smsBomb
+
 超级简单易用的短信💣轰炸🐔
 
 # 使用说明
 
-本程序使用 Python3.6.4 在 Mac 上开发，不兼容 Python2.x。如果多版本Python, 您可以尝试 PyEnv 或者 Anaconda
+本程序使用 Python 3.6.4 在 Mac 上开发，不兼容 Python 2.x。如果多版本 Python, 您可以尝试 PyEnv 或者 Anaconda
 
 #### CLI 版本
 
@@ -12,7 +13,6 @@ usage: python -m smsBomb [-h] -t TARGET [-n TIMES]
                          [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}]
                          [-c CONFIG] [--process PROCESS_NUM] [-m MESSAGE] [-v]
                          [-x PROXY]
-python -m smsBomb: error: the following arguments are required: -t/--target
 
 
 短信轰炸机
@@ -54,7 +54,7 @@ See https://von.sh/smsBomb
 利用 Github 提供的 [Searching-Code](https://help.github.com/articles/searching-code/) 搜索一些安全意识薄弱的用户不小心泄漏出来的敏感信息。
 
 以 PHP 项目为例子:
-我需要在 application 目录下查找所有文件名含有 config, 内容中含有 `sms/send` 字样的配置文件 `(in file)` 不搜索 `fork` 的仓库
+我需要在 `application` 目录下查找所有文件名含有 `config`, 内容中含有 `sms/send` 字样的配置文件 `(in file)` 不搜索 `fork` 的仓库
 
 那么一个完整的搜索语法即为:
 
