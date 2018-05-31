@@ -8,6 +8,8 @@
 
 #### CLI 版本
 
+![截图效果](./screenshot/bomb-cli.png)
+
 ```
 usage: python -m smsBomb [-h] -t TARGET [-n TIMES]
                          [-p {aliyun,cl253,juhe,luosimao,miaodi,netease,normal,smsbao,tencent,ucp,yunpian}]
@@ -209,7 +211,6 @@ See https://von.sh/smsBomb
 
 + 单一文件改为插件化形式，动态支持加载 plugins 目录下的其他短信产品.
 + 初版发布
-
 
 
 # 已知 BUGs.
