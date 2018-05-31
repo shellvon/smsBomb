@@ -147,7 +147,7 @@
     },
     "payloads": {
       "msisdn": "{{mobile}}",
-      "smscontent": "{{msg}}",
+      "smscontent": "{{content}}",
       "msgtype": 5,
       "longcode": ""
     }
@@ -178,19 +178,6 @@
     }
   },
   {
-    "product": "submail",
-    "desc": "赛邮云通讯",
-    "api": "https://api.mysubmail.com/message/send",
-    "source": "https://github.com/zyimm/fighting/blob/490bc1bfde1176b79300a6c9388e153d6247bc1a/Application/Common/Conf/config.php",
-    "method": "POST",
-    "payloads": {
-      "appid": "10619",
-      "sign": "【验证码短信】",
-      "content": "您的验证码为123456",
-      "signature": "xxx"
-    }
-  },
-  {
     "product": "cl253",
     "desc": "创蓝253",
     "api": "http://smssh1.253.com/msg/send/json",
@@ -199,30 +186,6 @@
     "auth": {
       "account": "N3300103",
       "password": "JWi7jpcZ3"
-    },
-    "enable_custom_msg": true
-  },
-  {
-    "product": "cl253",
-    "desc": "创蓝253",
-    "api": "http://smssh1.253.com/msg/send/json",
-    "source": "https://github./warthur1214/supervice_ca_php/blob/b9a815efab658652ef1cc0d221980cf402bf5d75/Application/Home/Conf/config.php#L19-L21",
-    "method": "POST",
-    "auth": {
-      "account": "N1884706",
-      "password": "FhZqIplaXSf637"
-    },
-    "enable_custom_msg": true
-  },
-  {
-    "product": "cl253",
-    "desc": "创蓝253",
-    "api": "http://smssh1.253.com/msg/send/json",
-    "source": "https://github.com/136908359/web180324/blob/9b8153591726b3e614724ac963590cc976b43093/application/third_party/ChuanglanSmsHelper/Chuanglan_config.php#L22-L25",
-    "method": "POST",
-    "auth": {
-      "account": "N5363870",
-      "password": "Jfl3z7r2Hi6a88"
     },
     "enable_custom_msg": true
   },
@@ -285,7 +248,7 @@
     },
     "payloads": {
       "mobile": "{{mobile}}",
-      "content": "{{msg}}"
+      "content": "{{content}}"
     }
   },
   {

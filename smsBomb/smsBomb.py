@@ -187,13 +187,14 @@ class SmsBomb(LoggerMixin):
         self.logger.info('Start attacking phone: %s', self.target)
         while success_cnt < self.limit and failed_rate <= self.max_allowed_failed_rate:
             failed_rate = failed_cnt / self.limit
-            index, current_config = self._random_weight_select()
-            if not current_config:
+            cfg = self._random_weight_select()
+            if not cfg:
                 # 如果已经找不到配置了, 尝试把之前错误的配置重新分配,并标记失败次数
                 self.logger.warning('没有可用配置可供使用!尝试重置配置列表:%s', self.failed_config_lst)
                 self.re_config(self.failed_config_lst)
                 failed_cnt += 1
                 continue
+            index, current_config = cfg
             key = self.prefix + current_config['product']
             cls = current_config.get('product').title() + 'Plugin'
             obj = self.plugins.get(key)

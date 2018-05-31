@@ -19,16 +19,19 @@ class YunpianPlugin(SmsPlugin):
     def get_one_tpl(self):
         resp = self._req.post(self.API_URLS['tpl_get'], {
             'apikey': self.auth['api_key']}).json()
-        tpl = random.choice(resp)
-        return tpl
+        if resp:
+            return random.choice(resp)
 
     def send(self, mobile, **kwargs):
         tpl = self.get_one_tpl()
+        if not tpl:
+            self.logger.error('无法获取到模版信息(云片网)')
+            return False
         self.logger.debug('随机获取模版消息: %s', tpl)
         payloads = {
             'mobile': mobile,
             'apikey': self.auth['api_key'],
-            'text': self.get_one_tpl()['tpl_content']
+            'text': tpl.get('tpl_content')
         }
         resp = self._req.post(self.api, data=payloads).json()
         self.logger.info(resp)
