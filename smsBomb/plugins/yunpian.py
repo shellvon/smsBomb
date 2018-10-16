@@ -19,7 +19,7 @@ class YunpianPlugin(SmsPlugin):
     def get_one_tpl(self):
         resp = self._req.post(self.API_URLS['tpl_get'], {
             'apikey': self.auth['api_key']}).json()
-        if resp:
+        if resp and isinstance(resp, (list,)):
             return random.choice(resp)
 
     def send(self, mobile, **kwargs):
