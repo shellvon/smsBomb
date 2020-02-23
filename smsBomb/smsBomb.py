@@ -13,8 +13,7 @@ import uuid
 import coloredlogs
 import requests
 
-from smsBomb import __version__
-
+__version__ = '0.0.1'
 
 def setup_logger(name, use_colors=True, verbose_count=0):
     """
