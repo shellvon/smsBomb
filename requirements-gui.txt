@@ -1,4 +1,4 @@
-requests==2.20.0
+requests==2.31.0
 coloredlogs==9.3.1
 Cython==0.26.1
 Kivy==1.10.1.dev0
